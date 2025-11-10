@@ -1,0 +1,45 @@
+{
+  "terminals": [
+    "var",
+    "ident",
+    ":",
+    ";",
+    ",",
+    "array",
+    "[",
+    "]",
+    "..",
+    "of",
+    "string",
+    "integer",
+    "real",
+    "char",
+    "boolean",
+    "number"
+  ],
+  "nonterminals": [
+    "Program",
+    "DeclList",
+    "Decl",
+    "IdList",
+    "Type",
+    "ArrayType"
+  ],
+  "startSymbol": "Program",
+  "productions": {
+    "Program": [["DeclList"]],
+    "DeclList": [["Decl", "DeclList"], []],
+    "Decl": [["var", "IdList", ":", "Type", ";"]],
+    "IdList": [["ident", "IdListTail"]],
+    "IdListTail": [[",", "ident", "IdListTail"], []],
+    "Type": [
+      ["integer"],
+      ["real"],
+      ["char"],
+      ["boolean"],
+      ["string", "[", "number", "]"],
+      ["ArrayType"]
+    ],
+    "ArrayType": [["array", "[", "number", "..", "number", "]", "of", "Type"]]
+  }
+}
