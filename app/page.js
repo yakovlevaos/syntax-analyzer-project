@@ -4,7 +4,7 @@ import { lexer } from "../lib/lexer";
 import { parse } from "../lib/parser";
 import grammarJson from "../lib/grammar.json";
 import { checkLR1Grammar } from "../lib/lr1checker";
-import "../styles.css"; // Импорт css из вашего файла
+import "../styles.css";
 
 export default function Home() {
   const [code, setCode] = useState("");
@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <main className="container">
       <section>
-        <h1>Синтаксический анализатор (LL(1)) — Pascal (вариант 3)</h1>
+        <h1>Синтаксический анализатор</h1>
 
         <textarea
           placeholder="Вставьте здесь код на Pascal..."
