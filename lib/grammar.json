@@ -1,9 +1,16 @@
 {
   "terminals": [
     "var",
+    "procedure",
+    "function",
+    "forward",
+    "begin",
+    "end",
     "ident",
     ":",
     ";",
+    "(",
+    ")",
     ",",
     "array",
     "[",
@@ -21,15 +28,25 @@
     "Program",
     "DeclList",
     "Decl",
-    "IdList",
+    "VarDecl",
+    "ProcedureDecl",
+    "FunctionDecl",
+    "ParamList",
+    "ParamOpt",
+    "ParamTail",
+    "Param",
     "Type",
-    "ArrayType"
+    "ArrayType",
+    "IdList",
+    "IdListTail",
+    "Body"
   ],
   "startSymbol": "Program",
   "productions": {
     "Program": [["DeclList"]],
     "DeclList": [["Decl", "DeclList"], []],
-    "Decl": [["var", "IdList", ":", "Type", ";"]],
+    "Decl": [["VarDecl"], ["ProcedureDecl"], ["FunctionDecl"]],
+    "VarDecl": [["var", "IdList", ":", "Type", ";"]],
     "IdList": [["ident", "IdListTail"]],
     "IdListTail": [[",", "ident", "IdListTail"], []],
     "Type": [
@@ -40,6 +57,19 @@
       ["string", "[", "number", "]"],
       ["ArrayType"]
     ],
-    "ArrayType": [["array", "[", "number", "..", "number", "]", "of", "Type"]]
+    "ArrayType": [["array", "[", "number", "..", "number", "]", "of", "Type"]],
+    "ProcedureDecl": [
+      ["procedure", "ident", "ParamList", ";", "forward"],
+      ["procedure", "ident", "ParamList", ";", "Body"]
+    ],
+    "FunctionDecl": [
+      ["function", "ident", "ParamList", ":", "Type", ";", "forward"],
+      ["function", "ident", "ParamList", ":", "Type", ";", "Body"]
+    ],
+    "ParamList": [["(", "ParamOpt", ")"], []],
+    "ParamOpt": [["Param", "ParamTail"], []],
+    "ParamTail": [[",", "Param", "ParamTail"], []],
+    "Param": [["ident", ":", "Type"]],
+    "Body": [["begin", "end"]]
   }
 }

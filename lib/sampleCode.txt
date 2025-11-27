@@ -1,0 +1,26 @@
+// Корректные переменные
+var a, b: integer;
+var s: string[20];
+var arr: array[1..5] of real;
+
+// Корректные процедуры и функции
+procedure Proc1(a: integer; b: real);
+begin
+end;
+
+function Func1(x: integer; y: integer): real;
+begin
+end;
+
+// Синтаксическая ошибка (пропущен ;)
+var wrongVar integer;
+
+// Конфликт аргументов
+procedure Proc2(a: integer; a: real);
+begin
+end;
+
+// Конфликт процедур на одном уровне
+procedure Proc1;
+begin
+end;

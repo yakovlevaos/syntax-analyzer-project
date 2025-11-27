@@ -10,36 +10,40 @@ export default function Home() {
   const [code, setCode] = useState("");
   const [result, setResult] = useState("");
   const [grammarStatus, setGrammarStatus] = useState("");
-  const [errorLines, setErrorLines] = useState([]);
+  const [errorLine, setErrorLine] = useState("");
 
   const checkCode = () => {
     try {
+      // Проверка LR(1) грамматики
       const grammarCheck = checkLR1Grammar(grammarJson);
       if (!grammarCheck.isLR1) {
         setGrammarStatus(
           "❌ Грамматика НЕ является LR(1): " + grammarCheck.message
         );
         setResult("");
-        setErrorLines([]);
+        setErrorLine("");
         return;
       } else {
         setGrammarStatus("✅ Грамматика является LR(1).");
       }
 
+      // Лексический и синтаксический разбор
       const tokens = lexer(code);
       const parseResult = parse(tokens);
 
-      // Если в результате есть переносы строки, показываем построчно ошибки
-      if (typeof parseResult === "string" && parseResult.includes("\\n")) {
-        setErrorLines(parseResult.split("\\n"));
+      if (
+        parseResult.startsWith("Ошибка") ||
+        parseResult.startsWith("Конфликт")
+      ) {
+        setErrorLine(parseResult);
         setResult("");
       } else {
-        setErrorLines([]);
+        setErrorLine("");
         setResult(parseResult);
       }
     } catch (e) {
       setGrammarStatus("");
-      setErrorLines([e.message]);
+      setErrorLine(e.message);
       setResult("");
     }
   };
@@ -47,7 +51,7 @@ export default function Home() {
   return (
     <main className="container">
       <section>
-        <h1>Синтаксический анализатор</h1>
+        <h1>Синтаксический анализатор Pascal</h1>
 
         <textarea
           placeholder="Вставьте здесь код на Pascal..."
@@ -62,7 +66,7 @@ export default function Home() {
               setCode(sample);
               setResult("");
               setGrammarStatus("");
-              setErrorLines([]);
+              setErrorLine("");
             }}
             className="secondary"
           >
@@ -81,13 +85,11 @@ export default function Home() {
           </div>
         )}
 
-        {errorLines.length > 0 && (
+        {errorLine && (
           <div className="error-list" aria-live="polite">
-            {errorLines.map((line, idx) => (
-              <div key={idx} className="error-item">
-                <span className="error-icon">❌</span> {line}
-              </div>
-            ))}
+            <div className="error-item">
+              <span className="error-icon">❌</span> {errorLine}
+            </div>
           </div>
         )}
 
@@ -97,8 +99,25 @@ export default function Home() {
   );
 }
 
-const sample = `var a, b, c: integer;
+const sample = `
+var a, b: integer;
 var s: string[20];
 var arr: array[1..5] of real;
-var t, s: string[300];
-var wrongArr: array[10..5] of integer;`;
+
+procedure Proc1(a: integer; b: real);
+begin
+end;
+
+function Func1(x: integer; y: integer): real;
+begin
+end;
+
+var wrongVar integer;
+
+procedure Proc2(a: integer; a: real);
+begin
+end;
+
+procedure Proc1;
+begin
+end;`;
