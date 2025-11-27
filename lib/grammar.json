@@ -32,7 +32,6 @@
     "ProcedureDecl",
     "FunctionDecl",
     "ParamList",
-    "ParamOpt",
     "ParamTail",
     "Param",
     "Type",
@@ -66,8 +65,7 @@
       ["function", "ident", "ParamList", ":", "Type", ";", "forward"],
       ["function", "ident", "ParamList", ":", "Type", ";", "Body"]
     ],
-    "ParamList": [["(", "ParamOpt", ")"], []],
-    "ParamOpt": [["Param", "ParamTail"], []],
+    "ParamList": [["(", "Param", "ParamTail", ")"], []],
     "ParamTail": [[",", "Param", "ParamTail"], []],
     "Param": [["ident", ":", "Type"]],
     "Body": [["begin", "end"]]

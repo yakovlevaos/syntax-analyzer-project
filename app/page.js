@@ -14,7 +14,6 @@ export default function Home() {
 
   const checkCode = () => {
     try {
-      // Проверка LR(1) грамматики
       const grammarCheck = checkLR1Grammar(grammarJson);
       if (!grammarCheck.isLR1) {
         setGrammarStatus(
@@ -27,19 +26,15 @@ export default function Home() {
         setGrammarStatus("✅ Грамматика является LR(1).");
       }
 
-      // Лексический и синтаксический разбор
       const tokens = lexer(code);
       const parseResult = parse(tokens);
 
-      if (
-        parseResult.startsWith("Ошибка") ||
-        parseResult.startsWith("Конфликт")
-      ) {
+      if (parseResult.startsWith("Ошибка")) {
         setErrorLine(parseResult);
         setResult("");
       } else {
-        setErrorLine("");
         setResult(parseResult);
+        setErrorLine("");
       }
     } catch (e) {
       setGrammarStatus("");
@@ -54,7 +49,7 @@ export default function Home() {
         <h1>Синтаксический анализатор Pascal</h1>
 
         <textarea
-          placeholder="Вставьте здесь код на Pascal..."
+          placeholder="Вставьте код на Pascal..."
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
@@ -99,25 +94,20 @@ export default function Home() {
   );
 }
 
-const sample = `
-var a, b: integer;
+const sample = `var a, b: integer;
 var s: string[20];
 var arr: array[1..5] of real;
 
-procedure Proc1(a: integer; b: real);
+procedure Proc1(x: integer, y: real);
 begin
 end;
 
-function Func1(x: integer; y: integer): real;
+function Func1(a: integer, b: string[10]): real;
 begin
 end;
 
-var wrongVar integer;
+procedure Proc2;
+forward;
 
-procedure Proc2(a: integer; a: real);
-begin
-end;
-
-procedure Proc1;
-begin
-end;`;
+function Func2: integer;
+forward;`;
