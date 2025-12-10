@@ -1,34 +1,32 @@
 {
   "terminals": [
-    "var",
     "procedure",
     "function",
     "forward",
     "begin",
     "end",
-    "ident",
     ":",
     ";",
     "(",
     ")",
     ",",
-    "array",
-    "[",
-    "]",
-    "..",
-    "of",
-    "string",
     "integer",
     "real",
     "char",
     "boolean",
+    "string",
+    "[",
+    "]",
+    "..",
+    "of",
+    "letter",
+    "digit",
     "number"
   ],
   "nonterminals": [
     "Program",
     "DeclList",
     "Decl",
-    "VarDecl",
     "ProcedureDecl",
     "FunctionDecl",
     "ParamList",
@@ -36,18 +34,58 @@
     "Param",
     "Type",
     "ArrayType",
-    "IdList",
-    "IdListTail",
-    "Body"
+    "Body",
+    "Ident",
+    "IdentTail"
   ],
   "startSymbol": "Program",
   "productions": {
     "Program": [["DeclList"]],
     "DeclList": [["Decl", "DeclList"], []],
-    "Decl": [["VarDecl"], ["ProcedureDecl"], ["FunctionDecl"]],
-    "VarDecl": [["var", "IdList", ":", "Type", ";"]],
-    "IdList": [["ident", "IdListTail"]],
-    "IdListTail": [[",", "ident", "IdListTail"], []],
+    "Decl": [["ProcedureDecl"], ["FunctionDecl"]],
+    "ProcedureDecl": [
+      [
+        "procedure",
+        "Ident",
+        "ParamList",
+        ";",
+        "forward",
+        { "action": "declareProcedure" }
+      ],
+      [
+        "procedure",
+        "Ident",
+        "ParamList",
+        ";",
+        "Body",
+        { "action": "declareProcedure" }
+      ]
+    ],
+    "FunctionDecl": [
+      [
+        "function",
+        "Ident",
+        "ParamList",
+        ":",
+        "Type",
+        ";",
+        "forward",
+        { "action": "declareFunction" }
+      ],
+      [
+        "function",
+        "Ident",
+        "ParamList",
+        ":",
+        "Type",
+        ";",
+        "Body",
+        { "action": "declareFunction" }
+      ]
+    ],
+    "ParamList": [["(", "Param", "ParamTail", ")"], []],
+    "ParamTail": [[",", "Param", "ParamTail"], []],
+    "Param": [["Ident", ":", "Type", { "action": "declareParam" }]],
     "Type": [
       ["integer"],
       ["real"],
@@ -57,17 +95,8 @@
       ["ArrayType"]
     ],
     "ArrayType": [["array", "[", "number", "..", "number", "]", "of", "Type"]],
-    "ProcedureDecl": [
-      ["procedure", "ident", "ParamList", ";", "forward"],
-      ["procedure", "ident", "ParamList", ";", "Body"]
-    ],
-    "FunctionDecl": [
-      ["function", "ident", "ParamList", ":", "Type", ";", "forward"],
-      ["function", "ident", "ParamList", ":", "Type", ";", "Body"]
-    ],
-    "ParamList": [["(", "Param", "ParamTail", ")"], []],
-    "ParamTail": [[",", "Param", "ParamTail"], []],
-    "Param": [["ident", ":", "Type"]],
-    "Body": [["begin", "end"]]
+    "Body": [["begin", "DeclList", "end"]],
+    "Ident": [["letter", "IdentTail"]],
+    "IdentTail": [["letter", "IdentTail"], ["digit", "IdentTail"], []]
   }
 }
