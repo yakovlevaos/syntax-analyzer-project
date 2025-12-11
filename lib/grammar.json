@@ -43,7 +43,10 @@
       ["function", "Ident", "ParamList", "colon", "Type", "semicolon"]
     ],
     "ParamList": [["lparen", "Param", "ParamTail", "rparen"], []],
-    "ParamTail": [["comma", "Param", "ParamTail"], []],
+    "ParamTail": [
+      ["comma", "Param", "ParamTail"],
+      ["semicolon", "Param", "ParamTail"]
+    ],
     "Param": [["Ident", "colon", "Type"]],
     "Type": [["integer"], ["real"]],
     "Body": [
