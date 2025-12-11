@@ -137,6 +137,7 @@ export default function Home() {
         <div className="editor-column">
           <h2>Исходный код</h2>
           <textarea
+            style={{ resize: "both", overflow: "auto" }}
             value={codeText}
             onChange={(e) => setCodeText(e.target.value)}
             onClick={onCursorChange}
@@ -159,7 +160,12 @@ export default function Home() {
           <textarea
             value={grammarText}
             onChange={(e) => setGrammarText(e.target.value)}
-            style={{ fontFamily: "monospace", height: 400 }}
+            style={{
+              fontFamily: "monospace",
+              height: 400,
+              resize: "both",
+              overflow: "auto"
+            }}
           />
           <div style={{ marginTop: 8 }}>
             <button onClick={onSaveGrammar}>Сохранить грамматику</button>
