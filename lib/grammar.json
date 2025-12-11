@@ -2,26 +2,18 @@
   "terminals": [
     "procedure",
     "function",
-    "forward",
     "begin",
     "end",
-    ":",
-    ";",
-    "(",
-    ")",
-    ",",
+    "var",
     "integer",
     "real",
-    "char",
-    "boolean",
-    "string",
-    "[",
-    "]",
-    "..",
-    "of",
+    "colon",
+    "semicolon",
+    "comma",
+    "lparen",
+    "rparen",
     "letter",
-    "digit",
-    "number"
+    "digit"
   ],
   "nonterminals": [
     "Program",
@@ -33,7 +25,6 @@
     "ParamTail",
     "Param",
     "Type",
-    "ArrayType",
     "Body",
     "Ident",
     "IdentTail"
@@ -44,58 +35,21 @@
     "DeclList": [["Decl", "DeclList"], []],
     "Decl": [["ProcedureDecl"], ["FunctionDecl"]],
     "ProcedureDecl": [
-      [
-        "procedure",
-        "Ident",
-        "ParamList",
-        ";",
-        "forward",
-        { "action": "declareProcedure" }
-      ],
-      [
-        "procedure",
-        "Ident",
-        "ParamList",
-        ";",
-        "Body",
-        { "action": "declareProcedure" }
-      ]
+      ["procedure", "Ident", "ParamList", "semicolon", "Body"],
+      ["procedure", "Ident", "ParamList", "semicolon"]
     ],
     "FunctionDecl": [
-      [
-        "function",
-        "Ident",
-        "ParamList",
-        ":",
-        "Type",
-        ";",
-        "forward",
-        { "action": "declareFunction" }
-      ],
-      [
-        "function",
-        "Ident",
-        "ParamList",
-        ":",
-        "Type",
-        ";",
-        "Body",
-        { "action": "declareFunction" }
-      ]
+      ["function", "Ident", "ParamList", "colon", "Type", "semicolon", "Body"],
+      ["function", "Ident", "ParamList", "colon", "Type", "semicolon"]
     ],
-    "ParamList": [["(", "Param", "ParamTail", ")"], []],
-    "ParamTail": [[",", "Param", "ParamTail"], []],
-    "Param": [["Ident", ":", "Type", { "action": "declareParam" }]],
-    "Type": [
-      ["integer"],
-      ["real"],
-      ["char"],
-      ["boolean"],
-      ["string", "[", "number", "]"],
-      ["ArrayType"]
+    "ParamList": [["lparen", "Param", "ParamTail", "rparen"], []],
+    "ParamTail": [["comma", "Param", "ParamTail"], []],
+    "Param": [["Ident", "colon", "Type"]],
+    "Type": [["integer"], ["real"]],
+    "Body": [
+      ["begin", "DeclList", "end"],
+      ["begin", "DeclList", "end", "semicolon"]
     ],
-    "ArrayType": [["array", "[", "number", "..", "number", "]", "of", "Type"]],
-    "Body": [["begin", "DeclList", "end"]],
     "Ident": [["letter", "IdentTail"]],
     "IdentTail": [["letter", "IdentTail"], ["digit", "IdentTail"], []]
   }
