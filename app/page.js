@@ -89,7 +89,7 @@ export default function Home() {
       console.log(firstErr);
       setStatus(
         `❌ ${
-          firstErr.type === "semantic" ? "Семантическая ошибка" : firstErr.type
+          firstErr.type === "semantic" ? "Семантическая ошибка:" : firstErr.type
         } ${firstErr.message} (строка ${firstErr.line}, позиция ${
           firstErr.col
         })`
@@ -107,6 +107,27 @@ export default function Home() {
     setSavedGrammar(JSON.stringify(defaultGrammar, null, 2));
     setStatus("✅ Грамматика сброшена к исходной");
   };
+
+  function handleDownloadGrammar() {
+    if (!grammarText || grammarText.trim().length === 0) {
+      alert("Грамматика пуста, сначала отредактируйте или вставьте JSON.");
+      return;
+    }
+
+    const blob = new Blob([grammarText], {
+      type: "application/json;charset=utf-8"
+    });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "grammar.json"; // имя файла
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <main className="container">
@@ -144,6 +165,13 @@ export default function Home() {
             <button onClick={onSaveGrammar}>Сохранить грамматику</button>
             <button onClick={onResetGrammar} style={{ marginLeft: 4 }}>
               Сбросить до grammar.json
+            </button>
+            <button
+              onClick={handleDownloadGrammar}
+              style={{ marginLeft: 4 }}
+              className="px-4 py-2 bg-green-600 text-white rounded"
+            >
+              Скачать результат
             </button>
           </div>
         </div>
