@@ -162,7 +162,7 @@ export default function Home() {
             onChange={(e) => setGrammarText(e.target.value)}
             style={{
               fontFamily: "monospace",
-              height: 400,
+              height: 200,
               resize: "both",
               overflow: "auto"
             }}
