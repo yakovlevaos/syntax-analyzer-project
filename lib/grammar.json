@@ -13,7 +13,8 @@
     "lparen",
     "rparen",
     "letter",
-    "digit"
+    "digit",
+    "forward"
   ],
   "nonterminals": [
     "Program",
@@ -22,8 +23,7 @@
     "ProcedureDecl",
     "FunctionDecl",
     "ParamList",
-    "ParamTail",
-    "Param",
+    "ParamSection",
     "Type",
     "Body",
     "Ident",
@@ -32,26 +32,36 @@
   "startSymbol": "Program",
   "productions": {
     "Program": [["DeclList"]],
-    "DeclList": [["Decl", "DeclList"], []],
+    "DeclList": [["Decl", "DeclList"], ["Decl"]],
     "Decl": [["ProcedureDecl"], ["FunctionDecl"]],
     "ProcedureDecl": [
       ["procedure", "Ident", "ParamList", "semicolon", "Body"],
+      ["procedure", "Ident", "ParamList", "semicolon", "forward", "semicolon"],
       ["procedure", "Ident", "ParamList", "semicolon"]
     ],
     "FunctionDecl": [
       ["function", "Ident", "ParamList", "colon", "Type", "semicolon", "Body"],
+      [
+        "function",
+        "Ident",
+        "ParamList",
+        "colon",
+        "Type",
+        "semicolon",
+        "forward",
+        "semicolon"
+      ],
       ["function", "Ident", "ParamList", "colon", "Type", "semicolon"]
     ],
-    "ParamList": [["lparen", "Param", "ParamTail", "rparen"], []],
-    "ParamTail": [
-      ["comma", "Param", "ParamTail"],
-      ["semicolon", "Param", "ParamTail"]
+    "ParamList": [["lparen", "ParamSection", "rparen"], []],
+    "ParamSection": [
+      ["Ident", "colon", "Type"],
+      ["Ident", "comma", "Ident", "colon", "Type"]
     ],
-    "Param": [["Ident", "colon", "Type"]],
     "Type": [["integer"], ["real"]],
     "Body": [
       ["begin", "DeclList", "end"],
-      ["begin", "DeclList", "end", "semicolon"]
+      ["begin", "end"]
     ],
     "Ident": [["letter", "IdentTail"]],
     "IdentTail": [["letter", "IdentTail"], ["digit", "IdentTail"], []]
